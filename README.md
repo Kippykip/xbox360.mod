@@ -1,2 +1,2 @@
 # xbox360.mod
-XBox360 controller module for BlitzMax
+Threaded and non-Threaded XBox360 controller module for BlitzMax.
