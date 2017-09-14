@@ -57,7 +57,10 @@ Rem
 	-
 	- V2.0 Update: 12 June 2011
 	-			Now multithreaded to avoid any slowdown during the 'Update' Method
-	
+	-
+	- V2.1 Update: 14 September 2017
+	-           Module looks for XInput9_1_0.dll then XInput1_3.dll for compatibility for OS updates.
+	-
 	How to Use:-
 	To use in your code you need to import the module. Use
 
@@ -166,8 +169,8 @@ Type XINPUT_STATE
 	Field dwPacketNumber:Int
 	'Field GamePad:XINPUT_GAMEPAD
 	Field wButtons:Short
-   Field bLeftTrigger:Byte
-   Field bRightTrigger:Byte
+    Field bLeftTrigger:Byte
+    Field bRightTrigger:Byte
 	Field sThumbLX:Short
 	Field sThumbLY:Short
 	Field sThumbRX:Short
@@ -223,7 +226,8 @@ Function InitX360:Int()
 		DebugLog "Opened XInput1_3.dll successfully"
 		OnEnd CloseXInputLib
 	Else
-		DebugLog "Cannot find XInput1_3.dll"
+		OpenDLL = LoadLibraryA("XInput9_1_0.dll")
+		If Not OpenDLL DebugLog "Cannot find XInput1_3.dll or XInput9_1_0.dll"
 	EndIf
 	
 	Return OpenDLL
@@ -238,7 +242,7 @@ Function CloseXInputLib()
 	
 	If XInputLib
 		FreeLibrary( XInputLib )
-		DebugLog "Closing XInput1_3.dll Library"
+		DebugLog "Closing XInput Library"
 		XInputLib = Null
 	EndIf
 EndFunction
