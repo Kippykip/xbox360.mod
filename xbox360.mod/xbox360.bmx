@@ -182,7 +182,7 @@ Type XINPUT_VIBRATION
 	Field wRightMotorSpeed:Short
 EndType
 
-Global XInputLib:Int = InitX360()
+Global XInputLib:Byte Ptr = InitX360()
 Global XInputGetState:Int( dwUserIndex:Int , pState:Byte Ptr )"win32" = GetProcAddress( XInputLib , "XInputGetState" )
 Global XInputSetState:Int( dwUserIndex:Int , pVibration:Byte Ptr )"win32" = GetProcAddress( XInputLib , "XInputSetState" )
 
@@ -214,12 +214,13 @@ EndFunction
 ?
 
 'We should really close the library when finished
-Extern"win32"
-Function FreeLibrary:Int( hModule:Int )
+Extern'"win32"
+'Function FreeLibrary:Byte Ptr( hModule:Byte Ptr )
+Function FreeLibrary:Int( hModule:Byte Ptr )="WINBOOL __stdcall FreeLibrary (HMODULE )!"
 EndExtern
 
-Function InitX360:Int()
-	Local OpenDLL:Int
+Function InitX360:Byte Ptr()
+	Local OpenDLL:Byte Ptr
 	OpenDLL = LoadLibraryA("xinput1_3.dll")
 	
 	If OpenDLL
